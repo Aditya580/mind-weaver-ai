@@ -1,0 +1,4 @@
+project_id = "nvhjouuzxhxqtohdcacx"
+
+[functions.generate-mindmap]
+verify_jwt = false
