@@ -47,7 +47,7 @@ const AppSidebar = ({ savedMaps, onSelectMap, onDeleteMap, onNewMap, activeMapId
               exit={{ opacity: 0 }}
               className="font-display font-bold text-lg gradient-text"
             >
-              MindFlow
+              Weaving your Thoughts
             </motion.span>
           )}
         </AnimatePresence>

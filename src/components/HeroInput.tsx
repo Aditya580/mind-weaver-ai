@@ -32,7 +32,7 @@ const HeroInput = ({ onGenerate, isLoading }: HeroInputProps) => {
     >
       <div className="text-center space-y-2">
         <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight">
-          <span className="gradient-text">MindFlow</span>
+          <span className="gradient-text">Mind-Weaver</span>
         </h1>
         <p className="text-muted-foreground text-lg">
           Transform any idea into a visual mind map with AI
