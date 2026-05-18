@@ -7,6 +7,8 @@ import HeroInput from '@/components/HeroInput';
 import MindMapCanvas from '@/components/MindMapCanvas';
 import FloatingActions from '@/components/FloatingActions';
 import ThemeToggle from '@/components/ThemeToggle';
+import StickyNotes from '@/components/StickyNotes';
+import { Brain, StickyNote } from 'lucide-react';
 import { transformToReactFlow, type MindMapData } from '@/lib/mindmap-utils';
 import { supabase } from '@/integrations/supabase/client';
 
