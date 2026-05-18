@@ -117,26 +117,71 @@ const Index = () => {
       />
 
       <div className="flex-1 flex flex-col relative overflow-hidden">
+        {/* Ambient gradient backdrop */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-primary/20 blur-3xl animate-pulse-glow" />
+          <div className="absolute -bottom-40 -right-32 w-[32rem] h-[32rem] rounded-full bg-accent/20 blur-3xl" />
+        </div>
+
         {/* Top bar */}
-        <header className="flex items-center justify-between px-6 py-3 border-b border-border bg-card/50 backdrop-blur-sm z-10">
-          <div className="flex items-center gap-3">
-            {showCanvas && (
+        <header className="relative flex items-center justify-between px-6 py-3 border-b border-border bg-card/60 backdrop-blur-xl z-10">
+          <div className="flex items-center gap-3 min-w-0">
+            {view === 'mindmap' && showCanvas && (
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-sm font-medium text-muted-foreground"
+                className="text-sm font-medium text-muted-foreground truncate"
               >
                 {currentTopic}
               </motion.span>
             )}
           </div>
-          <ThemeToggle />
+
+          <div className="flex items-center gap-2">
+            {/* View toggle */}
+            <div className="relative flex items-center p-1 rounded-full glass-panel card-shadow">
+              {(['mindmap', 'notes'] as const).map((v) => {
+                const Icon = v === 'mindmap' ? Brain : StickyNote;
+                const active = view === v;
+                return (
+                  <button
+                    key={v}
+                    onClick={() => setView(v)}
+                    className={`relative z-10 flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-colors ${
+                      active ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {active && (
+                      <motion.span
+                        layoutId="view-pill"
+                        className="absolute inset-0 rounded-full gradient-primary -z-10"
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                    <Icon className="w-3.5 h-3.5" />
+                    <span className="capitalize">{v === 'mindmap' ? 'Mind Map' : 'Notes'}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <ThemeToggle />
+          </div>
         </header>
 
         {/* Main content */}
         <main className="flex-1 relative">
           <AnimatePresence mode="wait">
-            {!showCanvas ? (
+            {view === 'notes' ? (
+              <motion.div
+                key="notes"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="w-full h-full"
+              >
+                <StickyNotes />
+              </motion.div>
+            ) : !showCanvas ? (
               <motion.div
                 key="hero"
                 initial={{ opacity: 0 }}
