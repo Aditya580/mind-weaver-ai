@@ -29,7 +29,7 @@ const Index = () => {
   const [activeMapId, setActiveMapId] = useState<string | null>(null);
   const [currentTopic, setCurrentTopic] = useState('');
   const [showCanvas, setShowCanvas] = useState(false);
-  const [view, setView] = useState<'mindmap' | 'notes'>('mindmap');
+  const [view, setView] = useState<'mindmap' | 'notes' | 'handwriting'>('mindmap');
 
   const generateMindMap = useCallback(async (text: string) => {
     setIsLoading(true);
