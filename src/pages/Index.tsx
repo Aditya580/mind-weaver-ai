@@ -8,8 +8,8 @@ import MindMapCanvas from '@/components/MindMapCanvas';
 import FloatingActions from '@/components/FloatingActions';
 import ThemeToggle from '@/components/ThemeToggle';
 import StickyNotes from '@/components/StickyNotes';
-import UserMenu from '@/components/UserMenu';
-import { Brain, StickyNote } from 'lucide-react';
+import Handwriting from '@/components/Handwriting';
+import { Brain, StickyNote, PenLine } from 'lucide-react';
 import { transformToReactFlow, type MindMapData } from '@/lib/mindmap-utils';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -29,7 +29,7 @@ const Index = () => {
   const [activeMapId, setActiveMapId] = useState<string | null>(null);
   const [currentTopic, setCurrentTopic] = useState('');
   const [showCanvas, setShowCanvas] = useState(false);
-  const [view, setView] = useState<'mindmap' | 'notes'>('mindmap');
+  const [view, setView] = useState<'mindmap' | 'notes' | 'handwriting'>('mindmap');
 
   const generateMindMap = useCallback(async (text: string) => {
     setIsLoading(true);
@@ -141,8 +141,9 @@ const Index = () => {
           <div className="flex items-center gap-2">
             {/* View toggle */}
             <div className="relative flex items-center p-1 rounded-full glass-panel card-shadow">
-              {(['mindmap', 'notes'] as const).map((v) => {
-                const Icon = v === 'mindmap' ? Brain : StickyNote;
+              {(['mindmap', 'notes', 'handwriting'] as const).map((v) => {
+                const Icon = v === 'mindmap' ? Brain : v === 'notes' ? StickyNote : PenLine;
+                const label = v === 'mindmap' ? 'Mind Map' : v === 'notes' ? 'Notes' : 'Handwriting';
                 const active = view === v;
                 return (
                   <button
@@ -160,20 +161,29 @@ const Index = () => {
                       />
                     )}
                     <Icon className="w-3.5 h-3.5" />
-                    <span className="capitalize">{v === 'mindmap' ? 'Mind Map' : 'Notes'}</span>
+                    <span>{label}</span>
                   </button>
                 );
               })}
             </div>
             <ThemeToggle />
-            <UserMenu />
           </div>
         </header>
 
         {/* Main content */}
         <main className="flex-1 relative">
           <AnimatePresence mode="wait">
-            {view === 'notes' ? (
+            {view === 'handwriting' ? (
+              <motion.div
+                key="handwriting"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="w-full h-full"
+              >
+                <Handwriting />
+              </motion.div>
+            ) : view === 'notes' ? (
               <motion.div
                 key="notes"
                 initial={{ opacity: 0, y: 8 }}
